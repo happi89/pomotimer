@@ -6,10 +6,11 @@ import {
 	Paper,
 	PaperProps,
 	Title,
-	Text,
 	Stack,
+	Button,
 } from '@mantine/core';
 import Navbar from '../components/Navbar';
+import { PlayIcon } from '@heroicons/react/24/solid';
 
 const Home: NextPage = (props: PaperProps) => {
 	return (
@@ -31,7 +32,9 @@ const Home: NextPage = (props: PaperProps) => {
 								}}>
 								25:00
 							</Title>
-							<Text>Hello</Text>
+							<Button size='xl' rightIcon={<PlayIcon width={24} />}>
+								START
+							</Button>
 						</Stack>
 					</Paper>
 				</Container>
