@@ -24,6 +24,16 @@ const useStyles = createStyles((theme) => ({
 			display: 'none',
 		},
 	},
+	theme: {
+		backgroundColor:
+			theme.colorScheme === 'dark'
+				? theme.colors.dark[6]
+				: theme.colors.gray[0],
+		color:
+			theme.colorScheme === 'dark'
+				? theme.colors.yellow[4]
+				: theme.colors.blue[6],
+	},
 }));
 
 export default function Navbar() {
@@ -41,14 +51,14 @@ export default function Navbar() {
 				<Group spacing='xs'>
 					<Modal
 						title='Report'
-						openButton='Report'
+						openButton={matches ? 'Report' : <ChartPieIcon width={20} />}
 						leftIcon={<ChartPieIcon width={18} />}>
 						<p>Reports</p>
 					</Modal>
 
 					<Modal
 						title='Timer Settings'
-						openButton='Settings'
+						openButton={matches ? 'Settings' : <Cog6ToothIcon width={20} />}
 						closeButton='Save'
 						leftIcon={<Cog6ToothIcon width={18} />}>
 						<p>hello</p>
@@ -60,7 +70,8 @@ export default function Navbar() {
 						<Button
 							leftIcon={<UserIcon width={18} />}
 							component={NextLink}
-							href='/login'>
+							href='/login'
+							className={classes.theme}>
 							Login
 						</Button>
 					) : (
@@ -68,16 +79,7 @@ export default function Navbar() {
 							component={NextLink}
 							size='lg'
 							href='/login'
-							sx={(theme) => ({
-								backgroundColor:
-									theme.colorScheme === 'dark'
-										? theme.colors.dark[6]
-										: theme.colors.gray[0],
-								color:
-									theme.colorScheme === 'dark'
-										? theme.colors.yellow[4]
-										: theme.colors.blue[6],
-							})}>
+							className={classes.theme}>
 							<UserIcon width={20} />
 						</ActionIcon>
 					)}
