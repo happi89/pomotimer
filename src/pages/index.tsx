@@ -20,7 +20,7 @@ const Home: NextPage = (props: PaperProps) => {
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
 			<Center>
-				<Container size='sm' px='sm'>
+				<Container size='md' px='sm'>
 					<Navbar />
 					<Paper radius='sm' p='xl' shadow='xs' withBorder {...props}>
 						<Stack align='center'>

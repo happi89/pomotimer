@@ -42,13 +42,13 @@ export default function Navbar() {
 	const { data: session } = useSession();
 
 	return (
-		<Header height='xl' mb='xl'>
+		<Header height='xl' mb='xl' px='sm'>
 			<Group className={classes.header} position='apart' spacing={36}>
 				<Link href='/'>
 					<h2>PomoTimer</h2>
 				</Link>
 
-				<Group spacing='xs'>
+				<Group spacing={matches ? 'xs' : 'xl'}>
 					<Modal
 						title='Report'
 						openButton={matches ? 'Report' : <ChartPieIcon width={20} />}
