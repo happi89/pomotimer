@@ -70,8 +70,7 @@ export default function Navbar() {
 						<Button
 							leftIcon={<UserIcon width={18} />}
 							component={NextLink}
-							href='/login'
-							className={classes.theme}>
+							href='/login'>
 							Login
 						</Button>
 					) : (

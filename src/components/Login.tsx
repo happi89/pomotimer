@@ -19,11 +19,9 @@ import {
 import { NextLink } from '@mantine/next';
 import { showNotification } from '@mantine/notifications';
 import { useRouter } from 'next/router';
-import { useDisclosure } from '@mantine/hooks';
 
 export default function Login(props: PaperProps) {
 	const { data: session } = useSession();
-	const [opened, handlers] = useDisclosure(false);
 	const router = useRouter();
 	const form = useForm({
 		initialValues: {
@@ -56,7 +54,6 @@ export default function Login(props: PaperProps) {
 			<Divider label='Or continue with email' labelPosition='center' my='xl' />
 			<form
 				onSubmit={form.onSubmit(() => {
-					handlers.open();
 					const { username, password } = form.values;
 					signIn('john-doe', { redirect: false, username, password }).then(
 						(res) => {
@@ -72,7 +69,6 @@ export default function Login(props: PaperProps) {
 								  });
 						}
 					);
-					handlers.close();
 				})}>
 				<Stack>
 					<TextInput
@@ -109,7 +105,7 @@ export default function Login(props: PaperProps) {
 							</UnstyledButton>
 						</Center>
 					</Anchor>
-					<Button uppercase type='submit' loading>
+					<Button uppercase type='submit'>
 						Login
 					</Button>
 				</Group>

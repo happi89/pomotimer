@@ -1,4 +1,4 @@
-import { Box, Button, createStyles, Divider, Group } from '@mantine/core';
+import { Box, Button, Divider, Group } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { closeAllModals, openModal } from '@mantine/modals';
 import ThemeIcon from './ThemeIcon';
@@ -11,19 +11,6 @@ type Props = {
 	leftIcon: React.ReactNode;
 };
 
-const useStyles = createStyles((theme) => ({
-	theme: {
-		backgroundColor:
-			theme.colorScheme === 'dark'
-				? theme.colors.dark[6]
-				: theme.colors.gray[0],
-		color:
-			theme.colorScheme === 'dark'
-				? theme.colors.yellow[4]
-				: theme.colors.blue[6],
-	},
-}));
-
 export default function Modal({
 	title,
 	openButton,
@@ -32,14 +19,12 @@ export default function Modal({
 	leftIcon,
 }: Props) {
 	const matches = useMediaQuery('(min-width: 576px)');
-	const { classes } = useStyles();
 
 	return (
 		<>
 			{matches ? (
 				<Group position='center'>
 					<Button
-						className={classes.theme}
 						leftIcon={leftIcon}
 						onClick={() => {
 							openModal({
