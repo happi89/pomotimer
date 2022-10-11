@@ -1,18 +1,10 @@
+import Timer from './../components/Timer';
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import {
-	Center,
-	Container,
-	Paper,
-	PaperProps,
-	Title,
-	Stack,
-	Button,
-} from '@mantine/core';
+import { Center, Container } from '@mantine/core';
 import Navbar from '../components/Navbar';
-import { PlayIcon } from '@heroicons/react/24/solid';
 
-const Home: NextPage = (props: PaperProps) => {
+const Home: NextPage = () => {
 	return (
 		<>
 			<Head>
@@ -23,20 +15,7 @@ const Home: NextPage = (props: PaperProps) => {
 			<Center>
 				<Container size='md' px='sm'>
 					<Navbar />
-					<Paper radius='sm' p='xl' shadow='xs' withBorder {...props}>
-						<Stack align='center'>
-							<Title
-								order={1}
-								sx={{
-									fontSize: '4rem',
-								}}>
-								25:00
-							</Title>
-							<Button size='xl' rightIcon={<PlayIcon width={24} />}>
-								START
-							</Button>
-						</Stack>
-					</Paper>
+					<Timer />
 				</Container>
 			</Center>
 		</>

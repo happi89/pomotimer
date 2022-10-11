@@ -1,12 +1,9 @@
+import SettingsModal from './SettingsModal';
 import { createStyles, Header, Group, Button, ActionIcon } from '@mantine/core';
 import Link from 'next/link';
 import ProfileButton from '../components/ProfileButton';
 import Modal from '../components/Modal';
-import {
-	Cog6ToothIcon,
-	ChartPieIcon,
-	UserIcon,
-} from '@heroicons/react/24/solid';
+import { ChartPieIcon, UserIcon } from '@heroicons/react/24/solid';
 import ToggleTheme from './ToggleTheme';
 import { useSession } from 'next-auth/react';
 import { NextLink } from '@mantine/next';
@@ -41,6 +38,27 @@ export default function Navbar() {
 	const { classes } = useStyles();
 	const { data: session } = useSession();
 
+	const profile = () => {
+		return session ? (
+			<ProfileButton />
+		) : matches ? (
+			<Button
+				leftIcon={<UserIcon width={18} />}
+				component={NextLink}
+				href='/login'>
+				Login
+			</Button>
+		) : (
+			<ActionIcon
+				component={NextLink}
+				size='lg'
+				href='/login'
+				className={classes.theme}>
+				<UserIcon width={20} />
+			</ActionIcon>
+		);
+	};
+
 	return (
 		<Header height='xl' mb='xl' px='sm'>
 			<Group className={classes.header} position='apart' spacing={36}>
@@ -56,32 +74,10 @@ export default function Navbar() {
 						<p>Reports</p>
 					</Modal>
 
-					<Modal
-						title='Timer Settings'
-						openButton={matches ? 'Settings' : <Cog6ToothIcon width={20} />}
-						closeButton='Save'
-						leftIcon={<Cog6ToothIcon width={18} />}>
-						<p>hello</p>
-					</Modal>
+					<SettingsModal matches={matches} />
 
-					{session ? (
-						<ProfileButton />
-					) : matches ? (
-						<Button
-							leftIcon={<UserIcon width={18} />}
-							component={NextLink}
-							href='/login'>
-							Login
-						</Button>
-					) : (
-						<ActionIcon
-							component={NextLink}
-							size='lg'
-							href='/login'
-							className={classes.theme}>
-							<UserIcon width={20} />
-						</ActionIcon>
-					)}
+					{profile()}
+
 					<ToggleTheme />
 				</Group>
 			</Group>
