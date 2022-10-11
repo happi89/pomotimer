@@ -1,9 +1,17 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import { Center, Container } from '@mantine/core';
+import {
+	Center,
+	Container,
+	Paper,
+	PaperProps,
+	Title,
+	Text,
+	Stack,
+} from '@mantine/core';
 import Navbar from '../components/Navbar';
 
-const Home: NextPage = () => {
+const Home: NextPage = (props: PaperProps) => {
 	return (
 		<>
 			<Head>
@@ -14,11 +22,18 @@ const Home: NextPage = () => {
 			<Center>
 				<Container size='sm' px='sm'>
 					<Navbar />
-					<div>
-						All elements inside Center are centered Lorem ipsum dolor, sit amet
-						consectetur adipisicing elit. Culpa reiciendis voluptatem veritatis.
-						Consectetur, laborum voluptates?
-					</div>
+					<Paper radius='sm' p='xl' shadow='xs' withBorder {...props}>
+						<Stack align='center'>
+							<Title
+								order={1}
+								sx={{
+									fontSize: '4rem',
+								}}>
+								25:00
+							</Title>
+							<Text>Hello</Text>
+						</Stack>
+					</Paper>
 				</Container>
 			</Center>
 		</>

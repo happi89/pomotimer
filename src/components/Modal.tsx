@@ -3,7 +3,7 @@ import { closeAllModals, openModal } from '@mantine/modals';
 
 type Props = {
 	title: string;
-	openButton: string;
+	openButton?: string;
 	closeButton?: string;
 	children: React.ReactNode;
 	leftIcon: React.ReactNode;
