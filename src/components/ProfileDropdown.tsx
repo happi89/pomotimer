@@ -7,7 +7,7 @@ import { UserIcon } from '@heroicons/react/24/solid';
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 
-export default function ButtonMenu() {
+export default function ProfileDropdown() {
 	const { data: session } = useSession();
 
 	return (

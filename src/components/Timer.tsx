@@ -2,8 +2,10 @@ import { PlayIcon } from '@heroicons/react/24/solid';
 import { Paper, Stack, Tabs, Title, Button, PaperProps } from '@mantine/core';
 import { useTimerStore } from '../pages';
 import shallow from 'zustand/shallow';
+import React, { useEffect, useRef, useState } from 'react';
+import { useInterval } from '@mantine/hooks';
 
-export default function Timer(props: PaperProps) {
+export function TimerComponent(props: PaperProps) {
 	const { pomodoro, short, long } = useTimerStore(
 		(state) => ({
 			pomodoro: state.pomodoro,
@@ -13,18 +15,33 @@ export default function Timer(props: PaperProps) {
 		shallow
 	);
 
+	const [secondsLeft, setSecondsLeft] = useState(0);
+	const secondsLeftRef = useRef(secondsLeft);
+
+	const interval = useInterval(() => {
+		secondsLeftRef.current--;
+		setSecondsLeft(secondsLeftRef.current);
+	}, 1000);
+
+	useEffect(() => {
+		secondsLeftRef.current = pomodoro * 60;
+		setSecondsLeft(secondsLeftRef.current);
+		interval.start();
+		return interval.stop;
+	}, []);
+
 	const time = [
 		{
 			label: 'pomodoro',
-			value: pomodoro,
+			minuteValue: pomodoro,
 		},
 		{
 			label: 'short',
-			value: short,
+			minuteValue: short,
 		},
 		{
 			label: 'long',
-			value: long,
+			minuteValue: long,
 		},
 	];
 
@@ -47,7 +64,10 @@ export default function Timer(props: PaperProps) {
 										sx={{
 											fontSize: '4rem',
 										}}>
-										{t.value}:00
+										{t.minuteValue}:
+										{secondsLeft % 60 < 10
+											? `0${secondsLeft % 60}`
+											: secondsLeft % 60}
 									</Title>
 									<Button size='xl' rightIcon={<PlayIcon width={24} />}>
 										START
@@ -61,3 +81,5 @@ export default function Timer(props: PaperProps) {
 		</Paper>
 	);
 }
+const Timer = React.memo(TimerComponent);
+export default Timer;

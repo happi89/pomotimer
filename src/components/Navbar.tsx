@@ -1,13 +1,14 @@
 import SettingsModal from './SettingsModal';
 import { createStyles, Header, Group, Button, ActionIcon } from '@mantine/core';
 import Link from 'next/link';
-import ProfileButton from '../components/ProfileButton';
+import ProfileDropdown from './ProfileDropdown';
 import Modal from '../components/Modal';
 import { ChartPieIcon, UserIcon } from '@heroicons/react/24/solid';
 import ToggleTheme from './ToggleTheme';
 import { useSession } from 'next-auth/react';
 import { NextLink } from '@mantine/next';
 import { useMediaQuery } from '@mantine/hooks';
+import React from 'react';
 
 const useStyles = createStyles((theme) => ({
 	header: {
@@ -33,14 +34,14 @@ const useStyles = createStyles((theme) => ({
 	},
 }));
 
-export default function Navbar() {
+export function NavbarComponent() {
 	const matches = useMediaQuery('(min-width: 576px)');
 	const { classes } = useStyles();
 	const { data: session } = useSession();
 
 	const profile = () => {
 		return session ? (
-			<ProfileButton />
+			<ProfileDropdown />
 		) : matches ? (
 			<Button
 				leftIcon={<UserIcon width={18} />}
@@ -84,3 +85,6 @@ export default function Navbar() {
 		</Header>
 	);
 }
+
+const Navbar = React.memo(NavbarComponent);
+export default Navbar;
