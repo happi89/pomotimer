@@ -1,48 +1,52 @@
 import { Cog6ToothIcon } from '@heroicons/react/24/solid';
 import { Button, Grid, NumberInput } from '@mantine/core';
-import { useForm } from '@mantine/form';
 import Modal from './Modal';
 import { useTimerStore } from '../pages';
+import shallow from 'zustand/shallow';
 import { closeAllModals } from '@mantine/modals';
-import { useState } from 'react';
 
 export default function SettingsModal({ matches }: { matches: boolean }) {
-	const { pomodoro, short, long } = useTimerStore((state) => state.time);
-	const changeTimer = useTimerStore((state) => state.changeTimer);
-	// const form = useForm({
-	// 	initialValues: {
-	// 		pomodoro: pomodoro,
-	// 		short: short,
-	// 		long: long,
-	// 	},
-	// });
+	const { pomodoro, short, long } = useTimerStore(
+		(state) => ({
+			pomodoro: state.pomodoro,
+			short: state.short,
+			long: state.long,
+		}),
+		shallow
+	);
+
+	const { changePomodoro, changeShort, changeLong } = useTimerStore(
+		(state) => ({
+			changePomodoro: state.changePomodoro,
+			changeShort: state.changeShort,
+			changeLong: state.changeLong,
+		}),
+		shallow
+	);
 
 	const inputs = [
 		{
 			label: 'Pomodoro',
 			name: 'pomodoro',
 			value: pomodoro,
+			onChange: changePomodoro,
 			defaultValue: pomodoro,
 		},
 		{
 			label: 'Short Break',
 			name: 'short',
 			value: short,
+			onChange: changeShort,
 			defaultValue: short,
 		},
 		{
 			label: 'Long Break',
 			name: 'long',
 			value: long,
+			onChange: changeLong,
 			defaultValue: long,
 		},
 	];
-
-	// console.log(form.values, 'form values');
-	// form.onSubmit((values) => {
-	// 	console.log(values, 'onsubmit values');
-	// 	// closeAllModals();
-	// });
 
 	return (
 		<Modal
@@ -62,13 +66,14 @@ export default function SettingsModal({ matches }: { matches: boolean }) {
 									stepHoldInterval={100}
 									defaultValue={input.defaultValue}
 									value={input.value}
-									onChange={(value) => changeTimer(value || input.defaultValue)}
-									// {...form.getInputProps(input.name)}
+									onChange={(value) =>
+										input.onChange(value || input.defaultValue)
+									}
 								/>
 							</Grid.Col>
 						);
 					})}
-					<Button type='submit' ml='auto' mt='md' mr='xs'>
+					<Button ml='auto' mt='md' mr='xs' onClick={() => closeAllModals()}>
 						SAVE
 					</Button>
 				</Grid>

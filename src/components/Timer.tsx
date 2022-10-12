@@ -1,10 +1,18 @@
 import { PlayIcon } from '@heroicons/react/24/solid';
 import { Paper, Stack, Tabs, Title, Button, PaperProps } from '@mantine/core';
 import { useTimerStore } from '../pages';
+import shallow from 'zustand/shallow';
 
 export default function Timer(props: PaperProps) {
-	const { pomodoro, short, long } = useTimerStore((state) => state.time);
-	console.log(pomodoro, short, long, 'timer values');
+	const { pomodoro, short, long } = useTimerStore(
+		(state) => ({
+			pomodoro: state.pomodoro,
+			short: state.short,
+			long: state.long,
+		}),
+		shallow
+	);
+
 	return (
 		<Paper radius='sm' p='xl' shadow='xs' withBorder {...props}>
 			<Stack align='center'>

@@ -6,21 +6,29 @@ import Navbar from '../components/Navbar';
 import create from 'zustand';
 
 interface TimerState {
-	time: Map<string, { value: number }>;
-	changeTime: (type: string, value: number) => void;
+	pomodoro: number;
+	short: number;
+	long: number;
+	changePomodoro: (newValue: number) => void;
+	changeShort: (newValue: number) => void;
+	changeLong: (newValue: number) => void;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const useTimerStore = create<TimerState>()((set, get) => ({
-	time: new Map([
-		['pomodoro', { value: 25 }],
-		['short', { value: 5 }],
-		['long', { value: 25 }],
-	]),
-	changeTime: (type, value) => {
-		const time = get().time;
-		time.delete(type);
-		set(() => timeToChangevalue);
+	pomodoro: 25,
+	short: 5,
+	long: 10,
+	changePomodoro: (newValue) => {
+		set({ pomodoro: newValue });
+	},
+
+	changeShort: (newValue) => {
+		set({ short: newValue });
+	},
+
+	changeLong: (newValue) => {
+		set({ long: newValue });
 	},
 }));
 
