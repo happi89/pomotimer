@@ -9,6 +9,7 @@ type Props = {
 	closeButton?: string;
 	children: React.ReactNode;
 	leftIcon: React.ReactNode;
+	onClose?: () => void;
 };
 
 export default function Modal({
@@ -40,7 +41,11 @@ export default function Modal({
 													display: 'flex',
 													justifyContent: 'end',
 												}}>
-												<Button uppercase onClick={() => closeAllModals()}>
+												<Button
+													uppercase
+													onClick={() => {
+														closeAllModals();
+													}}>
 													{closeButton}
 												</Button>
 											</Box>

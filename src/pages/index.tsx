@@ -3,6 +3,23 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import { Center, Container } from '@mantine/core';
 import Navbar from '../components/Navbar';
+import create from 'zustand';
+
+interface Time {
+	pomodoro: number;
+	short: number;
+	long: number;
+}
+interface TimerState {
+	time: Time;
+	changeTimer: (value: Time) => void;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const useTimerStore = create<TimerState>()((set) => ({
+	time: { pomodoro: 25, short: 5, long: 10 },
+	changeTimer: (newValue) => set({ time: newValue }),
+}));
 
 const Home: NextPage = () => {
 	return (

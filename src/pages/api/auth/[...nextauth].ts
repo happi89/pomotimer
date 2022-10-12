@@ -18,10 +18,15 @@ export const authOptions: NextAuthOptions = {
 		jwt: ({ token, user }) => {
 			// first time jwt callback is run, user object is available
 			if (user) {
+				token.accessToken = token.accessToken;
 				token.id = user.id;
 			}
 
-			return token;
+			return Promise.resolve(token);
+		},
+		signIn: ({ user }) => {
+			if (user) return true;
+			return false;
 		},
 	},
 	// Configure one or more authentication providers
@@ -44,7 +49,7 @@ export const authOptions: NextAuthOptions = {
 				// perform you login logic
 				// find out user from db
 				if (username !== 'john-doe' || password !== '123456') {
-					return null;
+					throw new Error('invalid credentials');
 				}
 
 				// if everything is fine
@@ -60,11 +65,9 @@ export const authOptions: NextAuthOptions = {
 		// ...add more providers here
 	],
 	secret: env.NEXTAUTH_SECRET,
-	jwt: {
-		secret: env.NEXTAUTH_SECRET,
-	},
 	pages: {
 		signIn: '/login',
+		error: '/login',
 	},
 };
 

@@ -12,7 +12,6 @@ import {
 	Button,
 	Divider,
 	Stack,
-	Anchor,
 	Center,
 	UnstyledButton,
 } from '@mantine/core';
@@ -25,8 +24,8 @@ export default function Login(props: PaperProps) {
 	const router = useRouter();
 	const form = useForm({
 		initialValues: {
-			username: '',
-			password: '',
+			username: 'john-doe',
+			password: '123456',
 		},
 
 		validate: {
@@ -47,28 +46,29 @@ export default function Login(props: PaperProps) {
 				Welcome to PomoTimer, Login with
 			</Text>
 			<Group grow mb='md' mt='md'>
-				<Button onClick={() => signIn('google').then(() => router.push('/'))}>
+				<Button
+					onClick={() =>
+						signIn('google', { callbackUrl: `${window.location.origin}/` })
+					}>
 					Google
 				</Button>
 			</Group>
-			<Divider label='Or continue with email' labelPosition='center' my='xl' />
+			<Divider
+				label='Or continue with DEMO Login'
+				labelPosition='center'
+				my='xl'
+			/>
 			<form
-				onSubmit={form.onSubmit(() => {
+				onSubmit={form.onSubmit(async () => {
 					const { username, password } = form.values;
-					signIn('john-doe', { redirect: false, username, password }).then(
-						(res) => {
-							res?.ok
-								? router.push('/')
-								: showNotification({
-										title: 'ERROR',
-										message:
-											res?.status === 401
-												? 'Invalid Credentials'
-												: 'Server Error',
-										color: 'red',
-								  });
-						}
-					);
+					const res = await signIn('john-doe', {
+						username,
+						password,
+						callbackUrl: `${window.location.origin}/`,
+					});
+					if (res?.error)
+						showNotification({ message: res?.error, color: 'red' });
+					if (res?.url) router.push('/');
 				})}>
 				<Stack>
 					<TextInput
@@ -97,14 +97,12 @@ export default function Login(props: PaperProps) {
 				</Stack>
 
 				<Group position='apart' mt='lg'>
-					<Anchor color='dimmed' size='sm'>
-						<Center inline>
-							<ArrowLongLeftIcon width={16} />
-							<UnstyledButton component={NextLink} href='/' ml={5}>
-								Back
-							</UnstyledButton>
-						</Center>
-					</Anchor>
+					<Center inline>
+						<ArrowLongLeftIcon width={16} />
+						<UnstyledButton component={NextLink} href='/' ml={5}>
+							Back
+						</UnstyledButton>
+					</Center>
 					<Button uppercase type='submit'>
 						Login
 					</Button>
