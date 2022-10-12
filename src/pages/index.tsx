@@ -5,20 +5,23 @@ import { Center, Container } from '@mantine/core';
 import Navbar from '../components/Navbar';
 import create from 'zustand';
 
-interface Time {
-	pomodoro: number;
-	short: number;
-	long: number;
-}
 interface TimerState {
-	time: Time;
-	changeTimer: (value: Time) => void;
+	time: Map<string, { value: number }>;
+	changeTime: (type: string, value: number) => void;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const useTimerStore = create<TimerState>()((set) => ({
-	time: { pomodoro: 25, short: 5, long: 10 },
-	changeTimer: (newValue) => set({ time: newValue }),
+export const useTimerStore = create<TimerState>()((set, get) => ({
+	time: new Map([
+		['pomodoro', { value: 25 }],
+		['short', { value: 5 }],
+		['long', { value: 25 }],
+	]),
+	changeTime: (type, value) => {
+		const time = get().time;
+		time.delete(type);
+		set(() => timeToChangevalue);
+	},
 }));
 
 const Home: NextPage = () => {
