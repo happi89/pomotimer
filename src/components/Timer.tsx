@@ -8,6 +8,7 @@ import {
 	Button,
 	PaperProps,
 	TabsValue,
+	Text,
 } from '@mantine/core';
 import { useTimerStore } from '../pages';
 import shallow from 'zustand/shallow';
@@ -129,6 +130,9 @@ export function TimerComponent(props: PaperProps) {
 							</Tabs.Panel>
 						);
 					})}
+					<Text align='center' size='lg' mt='md' weight={700}>
+						{activeTab === 'pomodoro' ? 'Time to Focus!' : 'Time for Breakx!'}
+					</Text>
 				</Tabs>
 			</Stack>
 		</Paper>

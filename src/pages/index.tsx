@@ -4,6 +4,7 @@ import Head from 'next/head';
 import { Center, Container } from '@mantine/core';
 import Navbar from '../components/Navbar';
 import create from 'zustand';
+import Tasks from '../components/Tasks';
 
 interface TimerState {
 	pomodoro: number;
@@ -44,6 +45,7 @@ const Home: NextPage = () => {
 				<Container size='md' px='sm'>
 					<Navbar />
 					<Timer />
+					<Tasks />
 				</Container>
 			</Center>
 		</>
