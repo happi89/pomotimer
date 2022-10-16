@@ -1,14 +1,20 @@
 import SettingsModal from './SettingsModal';
-import { createStyles, Header, Group, Button, ActionIcon } from '@mantine/core';
+import {
+	createStyles,
+	Header,
+	Group,
+	Button,
+	ActionIcon,
+	Modal,
+} from '@mantine/core';
 import Link from 'next/link';
 import ProfileDropdown from './ProfileDropdown';
-import Modal from '../components/Modal';
 import { ChartPieIcon, UserIcon } from '@heroicons/react/24/solid';
 import ToggleTheme from './ToggleTheme';
 import { useSession } from 'next-auth/react';
 import { NextLink } from '@mantine/next';
 import { useMediaQuery } from '@mantine/hooks';
-import React from 'react';
+import React, { useState } from 'react';
 
 const useStyles = createStyles((theme) => ({
 	header: {
@@ -17,25 +23,15 @@ const useStyles = createStyles((theme) => ({
 		alignItems: 'center',
 		height: '100%',
 	},
-	modal: {
-		[theme.fn.smallerThan('sm')]: {
-			display: 'none',
-		},
-	},
 	theme: {
-		backgroundColor:
-			theme.colorScheme === 'dark'
-				? theme.colors.dark[6]
-				: theme.colors.gray[0],
-		color:
-			theme.colorScheme === 'dark'
-				? theme.colors.yellow[4]
-				: theme.colors.blue[6],
+		backgroundColor: theme.colors.blue[8],
+		color: theme.colors.white,
 	},
 }));
 
 export function NavbarComponent() {
-	const matches = useMediaQuery('(min-width: 576px)');
+	const [open, setOpen] = useState(false);
+	const matches = useMediaQuery('(min-width: 600px)');
 	const { classes } = useStyles();
 	const { data: session } = useSession();
 
@@ -46,7 +42,8 @@ export function NavbarComponent() {
 			<Button
 				leftIcon={<UserIcon width={18} />}
 				component={NextLink}
-				href='/login'>
+				href='/login'
+				className={classes.theme}>
 				Login
 			</Button>
 		) : (
@@ -55,7 +52,7 @@ export function NavbarComponent() {
 				size='lg'
 				href='/login'
 				className={classes.theme}>
-				<UserIcon width={20} />
+				<UserIcon width={20} color='white' />
 			</ActionIcon>
 		);
 	};
@@ -64,16 +61,18 @@ export function NavbarComponent() {
 		<Header height='xl' mb='xl' px='sm'>
 			<Group className={classes.header} position='apart' spacing={36}>
 				<Link href='/'>
-					<h2>PomoTimer</h2>
+					<h2>{matches ? 'PomoTimer' : 'PT'}</h2>
 				</Link>
 
 				<Group spacing={matches ? 'xs' : 'xl'}>
-					<Modal
-						title='Report'
-						openButton={matches ? 'Report' : <ChartPieIcon width={20} />}
-						leftIcon={<ChartPieIcon width={18} />}>
+					<Modal opened={open} title='Report' onClose={() => setOpen(false)}>
 						<p>Reports</p>
 					</Modal>
+					<Button
+						leftIcon={matches && <ChartPieIcon width={20} />}
+						onClick={() => setOpen(true)}>
+						{matches ? 'Report' : <ChartPieIcon width={20} />}
+					</Button>
 
 					<SettingsModal matches={matches} />
 

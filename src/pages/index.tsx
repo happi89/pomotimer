@@ -33,6 +33,9 @@ export const useTimerStore = create<TimerState>()((set, get) => ({
 	},
 }));
 
+const pomodoro = useTimerStore.getState().pomodoro;
+console.log(pomodoro);
+
 const Home: NextPage = () => {
 	return (
 		<>
@@ -42,7 +45,7 @@ const Home: NextPage = () => {
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
 			<Center>
-				<Container size='md' px='sm'>
+				<Container size='xl' px='sm'>
 					<Navbar />
 					<Timer />
 					<Tasks />

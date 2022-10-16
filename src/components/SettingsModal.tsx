@@ -1,11 +1,11 @@
 import { Cog6ToothIcon } from '@heroicons/react/24/solid';
-import { Button, Grid, NumberInput } from '@mantine/core';
-import Modal from './Modal';
+import { Button, Grid, NumberInput, Modal } from '@mantine/core';
 import { useTimerStore } from '../pages';
 import shallow from 'zustand/shallow';
-import { closeAllModals } from '@mantine/modals';
+import { useState } from 'react';
 
 export default function SettingsModal({ matches }: { matches: boolean }) {
+	const [open, setOpen] = useState(false);
 	const { pomodoro, short, long } = useTimerStore(
 		(state) => ({
 			pomodoro: state.pomodoro,
@@ -27,34 +27,28 @@ export default function SettingsModal({ matches }: { matches: boolean }) {
 	const inputs = [
 		{
 			label: 'Pomodoro',
-			name: 'pomodoro',
 			value: pomodoro,
 			onChange: changePomodoro,
-			defaultValue: pomodoro,
 		},
 		{
 			label: 'Short Break',
-			name: 'short',
 			value: short,
 			onChange: changeShort,
-			defaultValue: short,
 		},
 		{
 			label: 'Long Break',
-			name: 'long',
 			value: long,
 			onChange: changeLong,
-			defaultValue: long,
 		},
 	];
 
 	return (
-		<Modal
-			title='Timer Settings'
-			openButton={matches ? 'Settings' : <Cog6ToothIcon width={20} />}
-			leftIcon={<Cog6ToothIcon width={18} />}>
-			<h4>Time (minutes)</h4>
-			<form onSubmit={() => console.log('')}>
+		<>
+			<Modal
+				title='Timer Settings'
+				opened={open}
+				onClose={() => setOpen(false)}>
+				<h4>Time (minutes)</h4>
 				<Grid mb='xl'>
 					{inputs.map((input, i) => {
 						return (
@@ -64,20 +58,25 @@ export default function SettingsModal({ matches }: { matches: boolean }) {
 									min={1}
 									stepHoldDelay={500}
 									stepHoldInterval={100}
-									defaultValue={input.defaultValue}
 									value={input.value}
 									onChange={(value) =>
-										input.onChange(value || input.defaultValue)
+										// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+										input.onChange(value!)
 									}
 								/>
 							</Grid.Col>
 						);
 					})}
-					<Button ml='auto' mt='md' mr='xs' onClick={() => closeAllModals()}>
-						SAVE
+					<Button ml='auto' mt='md' mr='xs' onClick={() => setOpen(false)}>
+						CLOSE
 					</Button>
 				</Grid>
-			</form>
-		</Modal>
+			</Modal>
+			<Button
+				leftIcon={matches && <Cog6ToothIcon width={18} />}
+				onClick={() => setOpen(true)}>
+				{matches ? 'Settings' : <Cog6ToothIcon width={20} />}
+			</Button>
+		</>
 	);
 }

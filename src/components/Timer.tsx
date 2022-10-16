@@ -14,6 +14,7 @@ import { useTimerStore } from '../pages';
 import shallow from 'zustand/shallow';
 import React, { useEffect, useRef, useState } from 'react';
 import { useInterval } from '@mantine/hooks';
+import Head from 'next/head';
 
 export function TimerComponent(props: PaperProps) {
 	const [isPaused, setIsPaused] = useState(true);
@@ -66,7 +67,7 @@ export function TimerComponent(props: PaperProps) {
 		interval.start();
 		return interval.stop;
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [activeTab]);
+	}, [activeTab, pomodoro, short, long]);
 
 	const switchPaused = () => {
 		setIsPaused(!isPaused);
@@ -86,56 +87,64 @@ export function TimerComponent(props: PaperProps) {
 	};
 
 	return (
-		<Paper radius='sm' p='xl' shadow='xs' withBorder {...props}>
-			<Stack align='center'>
-				<Tabs
-					keepMounted={false}
-					value={activeTab}
-					onTabChange={(value) => {
-						onTabChange(value);
-					}}>
-					<Tabs.List mb='sm'>
-						<Tabs.Tab value='pomodoro'>Pomodoro</Tabs.Tab>
-						<Tabs.Tab value='short'>Short Break</Tabs.Tab>
-						<Tabs.Tab value='long'>Long Break</Tabs.Tab>
-					</Tabs.List>
+		<>
+			<Head>
+				<title>
+					{Math.floor(secondsLeft / 60)}:
+					{secondsLeft % 60 < 10 ? `0${secondsLeft % 60}` : secondsLeft % 60}
+				</title>
+			</Head>
+			<Paper radius='sm' p='xl' shadow='xs' withBorder {...props}>
+				<Stack align='center'>
+					<Tabs
+						keepMounted={false}
+						value={activeTab}
+						onTabChange={(value) => {
+							onTabChange(value);
+						}}>
+						<Tabs.List mb='sm'>
+							<Tabs.Tab value='pomodoro'>Pomodoro</Tabs.Tab>
+							<Tabs.Tab value='short'>Short Break</Tabs.Tab>
+							<Tabs.Tab value='long'>Long Break</Tabs.Tab>
+						</Tabs.List>
 
-					{time.map((t, i) => {
-						return (
-							<Tabs.Panel value={t.label} pt='xs' key={i}>
-								<Stack align='center'>
-									<Title
-										order={1}
-										sx={{
-											fontSize: '4rem',
-										}}>
-										{Math.floor(secondsLeft / 60)}:
-										{secondsLeft % 60 < 10
-											? `0${secondsLeft % 60}`
-											: secondsLeft % 60}
-									</Title>
-									<Button
-										size='xl'
-										rightIcon={
-											isPaused ? (
-												<PlayIcon width={24} />
-											) : (
-												<PauseIcon width={24} />
-											)
-										}
-										onClick={switchPaused}>
-										{isPaused ? 'START' : 'STOP'}
-									</Button>
-								</Stack>
-							</Tabs.Panel>
-						);
-					})}
-					<Text align='center' size='lg' mt='md' weight={700}>
-						{activeTab === 'pomodoro' ? 'Time to Focus!' : 'Time for Breakx!'}
-					</Text>
-				</Tabs>
-			</Stack>
-		</Paper>
+						{time.map((t, i) => {
+							return (
+								<Tabs.Panel value={t.label} pt='xs' key={i}>
+									<Stack align='center'>
+										<Title
+											order={1}
+											sx={{
+												fontSize: '4rem',
+											}}>
+											{Math.floor(secondsLeft / 60)}:
+											{secondsLeft % 60 < 10
+												? `0${secondsLeft % 60}`
+												: secondsLeft % 60}
+										</Title>
+										<Button
+											size='xl'
+											rightIcon={
+												isPaused ? (
+													<PlayIcon width={24} />
+												) : (
+													<PauseIcon width={24} />
+												)
+											}
+											onClick={switchPaused}>
+											{isPaused ? 'START' : 'STOP'}
+										</Button>
+									</Stack>
+								</Tabs.Panel>
+							);
+						})}
+						<Text align='center' size='lg' mt='md' weight={700}>
+							{activeTab === 'pomodoro' ? 'Time to Focus!' : 'Time for Break!'}
+						</Text>
+					</Tabs>
+				</Stack>
+			</Paper>
+		</>
 	);
 }
 const Timer = React.memo(TimerComponent);
