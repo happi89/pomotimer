@@ -1,6 +1,6 @@
 import { Cog6ToothIcon } from '@heroicons/react/24/solid';
 import { Button, Grid, NumberInput, Modal } from '@mantine/core';
-import { useTimerStore } from '../pages';
+import { useTimerStore } from '../../pages';
 import shallow from 'zustand/shallow';
 import { useState } from 'react';
 

@@ -2,9 +2,9 @@ import Timer from './../components/Timer';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { Center, Container } from '@mantine/core';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/Navbar/Navbar';
 import create from 'zustand';
-import Tasks from '../components/Tasks';
+import Tasks from '../components/Tasks/Tasks';
 
 interface TimerState {
 	pomodoro: number;

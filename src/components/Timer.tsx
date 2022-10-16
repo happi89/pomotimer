@@ -62,6 +62,9 @@ export function TimerComponent(props: PaperProps) {
 
 	useEffect(() => {
 		const tab = time.find((t) => t.label === activeTab);
+		// if (tab!.minuteValue * 60 < 1 && Notification.permission === 'granted') {
+		// 	new Notification('time is up');
+		// }
 		secondsLeftRef.current = tab!.minuteValue * 60;
 		setSecondsLeft(secondsLeftRef.current);
 		interval.start();
