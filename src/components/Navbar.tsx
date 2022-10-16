@@ -33,29 +33,6 @@ export function NavbarComponent() {
 	const [open, setOpen] = useState(false);
 	const matches = useMediaQuery('(min-width: 600px)');
 	const { classes } = useStyles();
-	const { data: session } = useSession();
-
-	const profile = () => {
-		return session ? (
-			<ProfileDropdown />
-		) : matches ? (
-			<Button
-				leftIcon={<UserIcon width={18} />}
-				component={NextLink}
-				href='/login'
-				className={classes.theme}>
-				Login
-			</Button>
-		) : (
-			<ActionIcon
-				component={NextLink}
-				size='lg'
-				href='/login'
-				className={classes.theme}>
-				<UserIcon width={20} color='white' />
-			</ActionIcon>
-		);
-	};
 
 	return (
 		<Header height='xl' mb='xl' px='sm'>
@@ -76,7 +53,7 @@ export function NavbarComponent() {
 
 					<SettingsModal matches={matches} />
 
-					{profile()}
+					<Profile matches={matches} />
 
 					<ToggleTheme />
 				</Group>
@@ -84,6 +61,31 @@ export function NavbarComponent() {
 		</Header>
 	);
 }
+
+const Profile = ({ matches }: { matches: boolean }) => {
+	const { data: session } = useSession();
+	const { classes } = useStyles();
+
+	return session ? (
+		<ProfileDropdown />
+	) : matches ? (
+		<Button
+			leftIcon={<UserIcon width={18} />}
+			component={NextLink}
+			href='/login'
+			className={classes.theme}>
+			Login
+		</Button>
+	) : (
+		<ActionIcon
+			component={NextLink}
+			size='lg'
+			href='/login'
+			className={classes.theme}>
+			<UserIcon width={20} color='white' />
+		</ActionIcon>
+	);
+};
 
 const Navbar = React.memo(NavbarComponent);
 export default Navbar;
