@@ -8,13 +8,14 @@ import {
 	Text,
 	Menu,
 	UnstyledButton,
+	Collapse,
 } from '@mantine/core';
 import {
 	EllipsisVerticalIcon,
 	PlusCircleIcon,
 	TrashIcon,
 } from '@heroicons/react/24/outline';
-import { AddTaskModal } from './AddTaskModal';
+import { AddTaskModal } from './AddTaskForm';
 
 const Tasks = () => {
 	const [opened, setOpened] = useState(false);
@@ -40,14 +41,18 @@ const Tasks = () => {
 			</Group>
 			<Divider size='md' />
 
-			<AddTaskModal opened={opened} setOpened={setOpened} />
+			<Collapse in={opened} transitionDuration={50}>
+				<AddTaskModal opened={opened} setOpened={setOpened} />
+			</Collapse>
 
-			<Button
-				size='xl'
-				leftIcon={<PlusCircleIcon width={24} />}
-				onClick={() => setOpened(true)}>
-				<Text size='xl'>Add Task</Text>
-			</Button>
+			{opened || (
+				<Button
+					size='xl'
+					leftIcon={<PlusCircleIcon width={24} />}
+					onClick={() => setOpened(true)}>
+					<Text size='xl'>Add Task</Text>
+				</Button>
+			)}
 		</Stack>
 	);
 };

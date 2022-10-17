@@ -4,7 +4,6 @@ import {
 	Group,
 	Button,
 	Text,
-	Modal,
 	TextInput,
 	ActionIcon,
 	NumberInput,
@@ -14,17 +13,18 @@ import {
 	Collapse,
 } from '@mantine/core';
 
-interface ModalProps {
+interface Props {
 	opened: boolean;
 	setOpened: React.Dispatch<React.SetStateAction<boolean>>;
 }
-export const AddTaskModal = ({ opened, setOpened }: ModalProps) => {
+
+export const AddTaskModal = ({ opened, setOpened }: Props) => {
 	const [open, setOpen] = useState(false);
 	const [value, setValue] = useState(0);
 	const handlers = useRef<NumberInputHandlers>();
 
 	return (
-		<Modal title='Add Task' opened={opened} onClose={() => setOpened(false)}>
+		<>
 			<Divider size='md' />
 			<TextInput my='lg' placeholder='What are you working on?' />
 
@@ -66,8 +66,11 @@ export const AddTaskModal = ({ opened, setOpened }: ModalProps) => {
 			</Collapse>
 
 			<Group position='right' mt='lg'>
-				<Button onClick={() => setOpened(false)}>Add</Button>
+				<Button color='gray' onClick={() => setOpened(!opened)}>
+					Close
+				</Button>
+				<Button onClick={() => setOpened(!opened)}>Add</Button>
 			</Group>
-		</Modal>
+		</>
 	);
 };
