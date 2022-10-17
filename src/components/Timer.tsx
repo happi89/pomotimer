@@ -1,3 +1,4 @@
+import { TimerTabs } from './TimerTabs';
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { PauseIcon, PlayIcon } from '@heroicons/react/24/solid';
 import {
@@ -113,32 +114,13 @@ export function TimerComponent(props: PaperProps) {
 
 						{time.map((t, i) => {
 							return (
-								<Tabs.Panel value={t.label} pt='xs' key={i}>
-									<Stack align='center'>
-										<Title
-											order={1}
-											sx={{
-												fontSize: '4rem',
-											}}>
-											{Math.floor(secondsLeft / 60)}:
-											{secondsLeft % 60 < 10
-												? `0${secondsLeft % 60}`
-												: secondsLeft % 60}
-										</Title>
-										<Button
-											size='xl'
-											rightIcon={
-												isPaused ? (
-													<PlayIcon width={24} />
-												) : (
-													<PauseIcon width={24} />
-												)
-											}
-											onClick={switchPaused}>
-											{isPaused ? 'START' : 'STOP'}
-										</Button>
-									</Stack>
-								</Tabs.Panel>
+								<TimerTabs
+									t={t}
+									key={i}
+									secondsLeft={secondsLeft}
+									isPaused={isPaused}
+									switchPaused={switchPaused}
+								/>
 							);
 						})}
 						<Text align='center' size='lg' mt='md' weight={700}>
