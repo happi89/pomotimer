@@ -1,17 +1,7 @@
-import { TimerTabs } from './TimerTabs';
+import TimerTabs from './TimerTabs';
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { PauseIcon, PlayIcon } from '@heroicons/react/24/solid';
-import {
-	Paper,
-	Stack,
-	Tabs,
-	Title,
-	Button,
-	PaperProps,
-	TabsValue,
-	Text,
-} from '@mantine/core';
-import { useTimerStore } from '../pages';
+import { Paper, Stack, Tabs, PaperProps, TabsValue, Text } from '@mantine/core';
+import { useTimerStore } from '../../pages';
 import shallow from 'zustand/shallow';
 import React, { useEffect, useRef, useState } from 'react';
 import { useInterval } from '@mantine/hooks';

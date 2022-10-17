@@ -1,4 +1,4 @@
-import Timer from './../components/Timer';
+import Timer from '../components/Timer/Timer';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { Center, Container } from '@mantine/core';
