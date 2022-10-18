@@ -84,8 +84,9 @@ export function TimerComponent(props: PaperProps) {
 		<>
 			<Head>
 				<title>
-					{Math.floor(secondsLeft / 60)}:
-					{secondsLeft % 60 < 10 ? `0${secondsLeft % 60}` : secondsLeft % 60}
+					{`${Math.floor(secondsLeft / 60)}:${
+						secondsLeft % 60 < 10 ? `0${secondsLeft % 60}` : secondsLeft % 60
+					}`}
 				</title>
 			</Head>
 			<Paper radius='sm' p='xl' shadow='xs' withBorder {...props}>

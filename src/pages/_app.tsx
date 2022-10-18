@@ -9,7 +9,6 @@ import {
 	ColorScheme,
 } from '@mantine/core';
 import Head from 'next/head';
-import { ModalsProvider } from '@mantine/modals';
 import { useLocalStorage } from '@mantine/hooks';
 import { NotificationsProvider } from '@mantine/notifications';
 
@@ -39,11 +38,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
 						withGlobalStyles
 						withNormalizeCSS
 						theme={{ colorScheme }}>
-						<ModalsProvider>
-							<NotificationsProvider position='top-right' zIndex={2077}>
-								<Component {...pageProps} />
-							</NotificationsProvider>
-						</ModalsProvider>
+						<NotificationsProvider position='top-right' zIndex={2077}>
+							<Component {...pageProps} />
+						</NotificationsProvider>
 					</MantineProvider>
 				</ColorSchemeProvider>
 			</SessionProvider>

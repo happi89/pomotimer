@@ -18,7 +18,7 @@ interface Props {
 	setOpened: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const AddTaskModal = ({ opened, setOpened }: Props) => {
+export const AddTaskForm = ({ opened, setOpened }: Props) => {
 	const [open, setOpen] = useState(false);
 	const [value, setValue] = useState(0);
 	const handlers = useRef<NumberInputHandlers>();

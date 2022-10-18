@@ -1,3 +1,4 @@
+import { TasksMenu } from './TasksMenu';
 import React, { useState } from 'react';
 import {
 	Stack,
@@ -6,16 +7,10 @@ import {
 	Group,
 	Button,
 	Text,
-	Menu,
-	UnstyledButton,
 	Collapse,
 } from '@mantine/core';
-import {
-	EllipsisVerticalIcon,
-	PlusCircleIcon,
-	TrashIcon,
-} from '@heroicons/react/24/outline';
-import { AddTaskModal } from './AddTaskForm';
+import { PlusCircleIcon } from '@heroicons/react/24/outline';
+import { AddTaskForm } from './AddTaskForm';
 
 const Tasks = () => {
 	const [opened, setOpened] = useState(false);
@@ -23,26 +18,12 @@ const Tasks = () => {
 		<Stack mt='xl'>
 			<Group position='apart' align='center'>
 				<Title>Tasks</Title>
-				<Menu transition='pop-top-right' position='bottom-end' width={220}>
-					<Menu.Target>
-						<UnstyledButton>
-							<EllipsisVerticalIcon width={28} />
-						</UnstyledButton>
-					</Menu.Target>
-					<Menu.Dropdown>
-						<Menu.Item icon={<TrashIcon width={16} />}>
-							Clear finished tasks
-						</Menu.Item>
-						<Menu.Item icon={<TrashIcon width={16} />}>
-							Delete All Tasks
-						</Menu.Item>
-					</Menu.Dropdown>
-				</Menu>
+				<TasksMenu />
 			</Group>
-			<Divider size='md' />
+			<Divider size='md' mb='sm' />
 
-			<Collapse in={opened} transitionDuration={50}>
-				<AddTaskModal opened={opened} setOpened={setOpened} />
+			<Collapse in={opened} transitionDuration={100}>
+				<AddTaskForm opened={opened} setOpened={setOpened} />
 			</Collapse>
 
 			{opened || (

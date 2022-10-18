@@ -7,7 +7,6 @@ specifiers:
   '@mantine/core': ^5.5.4
   '@mantine/form': ^5.5.4
   '@mantine/hooks': ^5.5.4
-  '@mantine/modals': ^5.5.4
   '@mantine/next': ^5.5.4
   '@mantine/notifications': ^5.5.4
   '@next-auth/prisma-adapter': ^1.0.4
@@ -41,7 +40,6 @@ dependencies:
   '@mantine/core': 5.5.4_j5jjusp5lggyxutrx5nj2rosfu
   '@mantine/form': 5.5.4_react@18.2.0
   '@mantine/hooks': 5.5.4_react@18.2.0
-  '@mantine/modals': 5.5.4_peoatue7sckyfiogasz7flkvpm
   '@mantine/next': 5.5.4_6tawbrm53n4muonpugu7ldclma
   '@mantine/notifications': 5.5.4_peoatue7sckyfiogasz7flkvpm
   '@next-auth/prisma-adapter': 1.0.5_embyi2hx35tw6dsbllbhg4i77y
@@ -366,21 +364,6 @@ packages:
       react: '>=16.8.0'
     dependencies:
       react: 18.2.0
-    dev: false
-
-  /@mantine/modals/5.5.4_peoatue7sckyfiogasz7flkvpm:
-    resolution: {integrity: sha512-N5VOSB2RGYgcbinBq7mivP1yqAiE7e4PV/wu1oPmCO5vF5RnWcfbxyppaxADvw8ROQqsjtnQbHKOpqQZlu31Fg==}
-    peerDependencies:
-      '@mantine/core': 5.5.4
-      '@mantine/hooks': 5.5.4
-      react: '>=16.8.0'
-      react-dom: '>=16.8.0'
-    dependencies:
-      '@mantine/core': 5.5.4_j5jjusp5lggyxutrx5nj2rosfu
-      '@mantine/hooks': 5.5.4_react@18.2.0
-      '@mantine/utils': 5.5.4_react@18.2.0
-      react: 18.2.0
-      react-dom: 18.2.0_react@18.2.0
     dev: false
 
   /@mantine/next/5.5.4_6tawbrm53n4muonpugu7ldclma:
