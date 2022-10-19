@@ -7,6 +7,7 @@ import create from 'zustand';
 import Tasks from '../components/Tasks/Tasks';
 import { useSession } from 'next-auth/react';
 import { trpc } from '../utils/trpc';
+import { Task } from '@prisma/client';
 
 interface Time {
 	pomodoro: number;
@@ -15,49 +16,39 @@ interface Time {
 }
 
 interface TimerState {
-	pomodoro: number;
-	short: number;
-	long: number;
 	time: Time;
-	changePomodoro: (newValue: number) => void;
-	changeShort: (newValue: number) => void;
-	changeLong: (newValue: number) => void;
+	tasks: Task[];
 	changeTime: (newValue: Time) => void;
+	addTasks: (tasks: Task[]) => void;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const useTimerStore = create<TimerState>()((set, get) => ({
-	pomodoro: 25,
-	short: 5,
-	long: 10,
 	time: {
 		pomodoro: 25,
 		short: 5,
 		long: 10,
 	},
 
-	changePomodoro: (newValue) => {
-		set({ pomodoro: newValue });
-	},
+	tasks: [],
 
-	changeShort: (newValue) => {
-		set({ short: newValue });
-	},
-
-	changeLong: (newValue) => {
-		set({ long: newValue });
-	},
-
-	changeTime: (newValue) => {
+	changeTime: (newValue: Time) => {
 		set({ time: newValue });
+	},
+
+	addTasks: (tasks: Task[]) => {
+		set({ tasks: tasks });
 	},
 }));
 
 const Home: NextPage = () => {
 	const { data: session } = useSession();
 	const time = trpc.time.getTime.useQuery({ userId: session?.user?.id || '' });
+	const tasks = trpc.time.getTasks.useQuery({
+		userId: session?.user?.id || '',
+	});
 
-	if (time.isLoading)
+	if (time.isLoading || tasks.isLoading)
 		return (
 			<Center
 				style={{
@@ -68,24 +59,22 @@ const Home: NextPage = () => {
 			</Center>
 		);
 
-	if (time?.data?.pomodoro) {
+	if (time?.data?.pomodoro && tasks.data) {
 		useTimerStore.setState({ time: time?.data });
-		// useTimerStore.setState({ pomodoro: time!.data!.pomodoro });
-		// useTimerStore.setState({ short: time!.data!.short });
-		// useTimerStore.setState({ long: time!.data!.long });
+		useTimerStore.setState({ tasks: tasks?.data });
 	}
-	console.log(time.data);
+
+	const state = useTimerStore.getState();
+	console.log(state.tasks);
 
 	return (
-		<>
-			<Center>
-				<Container size='xl' px='sm'>
-					<Navbar />
-					<Timer />
-					<Tasks />
-				</Container>
-			</Center>
-		</>
+		<Center>
+			<Container size='xl' px='sm'>
+				<Navbar />
+				<Timer />
+				<Tasks />
+			</Container>
+		</Center>
 	);
 };
 

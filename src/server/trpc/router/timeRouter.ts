@@ -16,6 +16,15 @@ export const TimeRouter = t.router({
 				},
 			});
 		}),
+	getTasks: t.procedure
+		.input(z.object({ userId: z.string() }))
+		.query(async ({ ctx, input }) => {
+			return await ctx.prisma.task.findMany({
+				where: {
+					userId: input.userId,
+				},
+			});
+		}),
 	upsertTime: t.procedure
 		.input(
 			z.object({
@@ -31,13 +40,30 @@ export const TimeRouter = t.router({
 				update: {
 					pomodoro: input.pomodoro,
 					short: input.short,
-					long: input.short,
+					long: input.long,
 				},
 				create: {
 					userId: input.userId,
 					pomodoro: input.pomodoro,
 					short: input.short,
 					long: input.short,
+				},
+			});
+		}),
+	addTask: t.procedure
+		.input(
+			z.object({
+				userId: z.string(),
+				task: z.string(),
+				pomodoros: z.number(),
+			})
+		)
+		.mutation(async ({ ctx, input }) => {
+			return await ctx.prisma.task.create({
+				data: {
+					userId: input.userId,
+					task: input.task,
+					pomodoros: input.pomodoros,
 				},
 			});
 		}),

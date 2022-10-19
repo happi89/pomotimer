@@ -1,4 +1,4 @@
-import { EllipsisVerticalIcon, TrashIcon } from '@heroicons/react/24/solid';
+import { EllipsisVerticalIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { Menu, UnstyledButton } from '@mantine/core';
 
 export function TasksMenu() {

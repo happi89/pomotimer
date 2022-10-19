@@ -21,9 +21,6 @@ export default function SettingsModal({ matches }: { matches: boolean }) {
 				short: shortState,
 				long: longState,
 			});
-			// state.changePomodoro(pomodoroState);
-			// state.changeShort(shortState);
-			// state.changeLong(longState);
 		},
 	});
 
