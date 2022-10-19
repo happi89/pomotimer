@@ -1,44 +1,42 @@
 import { Cog6ToothIcon } from '@heroicons/react/24/solid';
 import { Button, Grid, NumberInput, Modal } from '@mantine/core';
 import { useTimerStore } from '../../pages';
-import shallow from 'zustand/shallow';
 import { useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { trpc } from '../../utils/trpc';
 
 export default function SettingsModal({ matches }: { matches: boolean }) {
+	const { data: session } = useSession();
 	const [open, setOpen] = useState(false);
-	const { pomodoro, short, long } = useTimerStore(
-		(state) => ({
-			pomodoro: state.pomodoro,
-			short: state.short,
-			long: state.long,
-		}),
-		shallow
-	);
+	const state = useTimerStore();
 
-	const { changePomodoro, changeShort, changeLong } = useTimerStore(
-		(state) => ({
-			changePomodoro: state.changePomodoro,
-			changeShort: state.changeShort,
-			changeLong: state.changeLong,
-		}),
-		shallow
-	);
+	const [pomodoroState, setPomodoroState] = useState(state.pomodoro);
+	const [shortState, setShortState] = useState(state.short);
+	const [longState, setLongState] = useState(state.long);
+
+	const upsertTime = trpc.time.upsertTime.useMutation({
+		onMutate: () => {
+			state.changePomodoro(pomodoroState);
+			state.changeShort(shortState);
+			state.changeLong(longState);
+		},
+	});
 
 	const inputs = [
 		{
 			label: 'Pomodoro',
-			value: pomodoro,
-			onChange: changePomodoro,
+			value: state.pomodoro,
+			onChange: setPomodoroState,
 		},
 		{
 			label: 'Short Break',
-			value: short,
-			onChange: changeShort,
+			value: state.short,
+			onChange: setShortState,
 		},
 		{
 			label: 'Long Break',
-			value: long,
-			onChange: changeLong,
+			value: state.long,
+			onChange: setLongState,
 		},
 	];
 
@@ -67,8 +65,24 @@ export default function SettingsModal({ matches }: { matches: boolean }) {
 							</Grid.Col>
 						);
 					})}
-					<Button ml='auto' mt='md' mr='xs' onClick={() => setOpen(false)}>
-						CLOSE
+					<Button
+						uppercase
+						ml='auto'
+						mt='md'
+						mr='xs'
+						onClick={() => {
+							if (session) {
+								upsertTime.mutate({
+									// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+									userId: session!.user!.id,
+									pomodoro: pomodoroState,
+									short: shortState,
+									long: longState,
+								});
+							}
+							setOpen(false);
+						}}>
+						Save
 					</Button>
 				</Grid>
 			</Modal>

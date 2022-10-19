@@ -2,7 +2,6 @@ import TimerTabs from './TimerTabs';
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Paper, Stack, Tabs, PaperProps, TabsValue, Text } from '@mantine/core';
 import { useTimerStore } from '../../pages';
-import shallow from 'zustand/shallow';
 import React, { useEffect, useRef, useState } from 'react';
 import { useInterval } from '@mantine/hooks';
 import Head from 'next/head';
@@ -15,27 +14,20 @@ export function TimerComponent(props: PaperProps) {
 	const secondsLeftRef = useRef(secondsLeft);
 	const isPausedRef = useRef(isPaused);
 
-	const { pomodoro, short, long } = useTimerStore(
-		(state) => ({
-			pomodoro: state.pomodoro,
-			short: state.short,
-			long: state.long,
-		}),
-		shallow
-	);
+	const state = useTimerStore();
 
 	const time = [
 		{
 			label: 'pomodoro',
-			minuteValue: pomodoro,
+			minuteValue: state.pomodoro,
 		},
 		{
 			label: 'short',
-			minuteValue: short,
+			minuteValue: state.short,
 		},
 		{
 			label: 'long',
-			minuteValue: long,
+			minuteValue: state.long,
 		},
 	];
 
@@ -61,7 +53,7 @@ export function TimerComponent(props: PaperProps) {
 		interval.start();
 		return interval.stop;
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [activeTab, pomodoro, short, long]);
+	}, [activeTab, state]);
 
 	const switchPaused = () => {
 		setIsPaused(!isPaused);

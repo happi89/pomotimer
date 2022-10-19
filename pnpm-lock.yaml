@@ -5,7 +5,7 @@ specifiers:
   '@emotion/server': ^11.10.0
   '@heroicons/react': ^2.0.12
   '@mantine/core': ^5.5.4
-  '@mantine/form': ^5.5.4
+  '@mantine/form': ^5.5.6
   '@mantine/hooks': ^5.5.4
   '@mantine/next': ^5.5.4
   '@mantine/notifications': ^5.5.4
@@ -38,7 +38,7 @@ dependencies:
   '@emotion/server': 11.10.0
   '@heroicons/react': 2.0.12_react@18.2.0
   '@mantine/core': 5.5.4_j5jjusp5lggyxutrx5nj2rosfu
-  '@mantine/form': 5.5.4_react@18.2.0
+  '@mantine/form': 5.5.6_react@18.2.0
   '@mantine/hooks': 5.5.4_react@18.2.0
   '@mantine/next': 5.5.4_6tawbrm53n4muonpugu7ldclma
   '@mantine/notifications': 5.5.4_peoatue7sckyfiogasz7flkvpm
@@ -348,8 +348,8 @@ packages:
       - '@types/react'
     dev: false
 
-  /@mantine/form/5.5.4_react@18.2.0:
-    resolution: {integrity: sha512-SKfVBmJGykwmEfMpRacXmhC2pwaKiR3fGPHppT0w1Gy/DDQx9BpwR7XgCcnPJFoR70CUZrVo5J/aglxPOIGSoA==}
+  /@mantine/form/5.5.6_react@18.2.0:
+    resolution: {integrity: sha512-hqFlL+xR6FXURdoJ71IcR0Y6naklcOm9HGUlx6ZLs1XWOzcXEXqGfse7pII6lySzX7Tw8R5XZgcnCojB0sEWOQ==}
     peerDependencies:
       react: '>=16.8.0'
     dependencies:

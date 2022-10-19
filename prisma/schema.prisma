@@ -14,6 +14,15 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+model Time {
+    id               String @id @default(cuid())
+    userId           String @unique
+    user             User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    pomodoro         Int    @default(25)
+    short            Int    @default(5)
+    long             Int    @default(10)
+}
+
 model Project {
     id                String @id @default(cuid())
     name              String 
@@ -42,6 +51,7 @@ model User {
     sessions      Session[]
     tasks         Task[]
     projects      Project[]
+    time          Time?
 }
 
 model Account {
