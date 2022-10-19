@@ -48,7 +48,7 @@ export default function Login(props: PaperProps) {
 			<Group grow mb='md' mt='md'>
 				<Button
 					onClick={() =>
-						signIn('google', { callbackUrl: `${window.location.origin}/` })
+						signIn('google', { callbackUrl: `${window.location.origin}` })
 					}>
 					Google
 				</Button>

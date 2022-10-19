@@ -59,7 +59,7 @@ const Home: NextPage = () => {
 			</Center>
 		);
 
-	if (time?.data?.pomodoro && tasks.data) {
+	if (session?.user && time?.data?.pomodoro && tasks.data) {
 		useTimerStore.setState({ time: time?.data });
 		useTimerStore.setState({ tasks: tasks?.data });
 	}

@@ -67,4 +67,19 @@ export const TimeRouter = t.router({
 				},
 			});
 		}),
+	deleteTasks: t.procedure
+		.input(
+			z.object({
+				userId: z.string(),
+				done: z.boolean(),
+			})
+		)
+		.mutation(async ({ ctx, input }) => {
+			return await ctx.prisma.task.deleteMany({
+				where: {
+					userId: input.userId,
+					done: input.done,
+				},
+			});
+		}),
 });
