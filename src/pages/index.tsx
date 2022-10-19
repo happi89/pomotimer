@@ -4,8 +4,6 @@ import { Center, Container } from '@mantine/core';
 import Navbar from '../components/Navbar/Navbar';
 import create from 'zustand';
 import Tasks from '../components/Tasks/Tasks';
-import { useSession } from 'next-auth/react';
-import { trpc } from '../utils/trpc';
 
 interface Time {
 	pomodoro: number;
@@ -53,10 +51,6 @@ export const useTimerStore = create<TimerState>()((set, get) => ({
 }));
 
 const Home: NextPage = () => {
-	// const changePomodoro = useTimerStore((state) => state.changePomodoro);
-	// const { data: session } = useSession();
-	// const time = trpc.time.getTime.useQuery({ userId: session?.user?.id || '' });
-
 	return (
 		<>
 			<Center>
