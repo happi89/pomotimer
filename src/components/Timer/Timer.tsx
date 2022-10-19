@@ -1,6 +1,6 @@
 import TimerTabs from './TimerTabs';
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Paper, Stack, Tabs, PaperProps, TabsValue, Text } from '@mantine/core';
+import { Paper, PaperProps, Stack, Tabs, TabsValue, Text } from '@mantine/core';
 import { useTimerStore } from '../../pages';
 import React, { useEffect, useRef, useState } from 'react';
 import { useInterval } from '@mantine/hooks';
@@ -16,18 +16,18 @@ export function TimerComponent(props: PaperProps) {
 
 	const state = useTimerStore();
 
-	const time = [
+	const times = [
 		{
 			label: 'pomodoro',
-			minuteValue: state.pomodoro,
+			minuteValue: state.time.pomodoro,
 		},
 		{
 			label: 'short',
-			minuteValue: state.short,
+			minuteValue: state.time.short,
 		},
 		{
 			label: 'long',
-			minuteValue: state.long,
+			minuteValue: state.time.long,
 		},
 	];
 
@@ -44,7 +44,7 @@ export function TimerComponent(props: PaperProps) {
 	}, 1000);
 
 	useEffect(() => {
-		const tab = time.find((t) => t.label === activeTab);
+		const tab = times.find((t) => t.label === activeTab);
 		// if (tab!.minuteValue * 60 < 1 && Notification.permission === 'granted') {
 		// 	new Notification('time is up');
 		// }
@@ -95,7 +95,7 @@ export function TimerComponent(props: PaperProps) {
 							<Tabs.Tab value='long'>Long Break</Tabs.Tab>
 						</Tabs.List>
 
-						{time.map((t, i) => {
+						{times.map((t, i) => {
 							return (
 								<TimerTabs
 									t={t}

@@ -9,6 +9,11 @@ export const TimeRouter = t.router({
 				where: {
 					userId: input.userId,
 				},
+				select: {
+					pomodoro: true,
+					short: true,
+					long: true,
+				},
 			});
 		}),
 	upsertTime: t.procedure

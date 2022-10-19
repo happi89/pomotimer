@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import Timer from '../components/Timer/Timer';
 import type { NextPage } from 'next';
-import { Center, Container } from '@mantine/core';
+import { Center, Container, Loader } from '@mantine/core';
 import Navbar from '../components/Navbar/Navbar';
 import create from 'zustand';
 import Tasks from '../components/Tasks/Tasks';
+import { useSession } from 'next-auth/react';
+import { trpc } from '../utils/trpc';
 
 interface Time {
 	pomodoro: number;
@@ -51,6 +54,28 @@ export const useTimerStore = create<TimerState>()((set, get) => ({
 }));
 
 const Home: NextPage = () => {
+	const { data: session } = useSession();
+	const time = trpc.time.getTime.useQuery({ userId: session?.user?.id || '' });
+
+	if (time.isLoading)
+		return (
+			<Center
+				style={{
+					height: '100vh',
+					width: '100vw',
+				}}>
+				<Loader size='lg' />
+			</Center>
+		);
+
+	if (time?.data?.pomodoro) {
+		useTimerStore.setState({ time: time?.data });
+		// useTimerStore.setState({ pomodoro: time!.data!.pomodoro });
+		// useTimerStore.setState({ short: time!.data!.short });
+		// useTimerStore.setState({ long: time!.data!.long });
+	}
+	console.log(time.data);
+
 	return (
 		<>
 			<Center>

@@ -10,32 +10,37 @@ export default function SettingsModal({ matches }: { matches: boolean }) {
 	const [open, setOpen] = useState(false);
 	const state = useTimerStore();
 
-	const [pomodoroState, setPomodoroState] = useState(state.pomodoro);
-	const [shortState, setShortState] = useState(state.short);
-	const [longState, setLongState] = useState(state.long);
+	const [pomodoroState, setPomodoroState] = useState(state.time.pomodoro);
+	const [shortState, setShortState] = useState(state.time.short);
+	const [longState, setLongState] = useState(state.time.long);
 
-	const upsertTime = trpc.time.upsertTime.useMutation({
+	const changeTime = trpc.time.upsertTime.useMutation({
 		onMutate: () => {
-			state.changePomodoro(pomodoroState);
-			state.changeShort(shortState);
-			state.changeLong(longState);
+			state.changeTime({
+				pomodoro: pomodoroState,
+				short: shortState,
+				long: longState,
+			});
+			// state.changePomodoro(pomodoroState);
+			// state.changeShort(shortState);
+			// state.changeLong(longState);
 		},
 	});
 
 	const inputs = [
 		{
 			label: 'Pomodoro',
-			value: state.pomodoro,
+			value: state.time.pomodoro,
 			onChange: setPomodoroState,
 		},
 		{
 			label: 'Short Break',
-			value: state.short,
+			value: state.time.short,
 			onChange: setShortState,
 		},
 		{
 			label: 'Long Break',
-			value: state.long,
+			value: state.time.long,
 			onChange: setLongState,
 		},
 	];
@@ -72,7 +77,7 @@ export default function SettingsModal({ matches }: { matches: boolean }) {
 						mr='xs'
 						onClick={() => {
 							if (session) {
-								upsertTime.mutate({
+								changeTime.mutate({
 									// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 									userId: session!.user!.id,
 									pomodoro: pomodoroState,
