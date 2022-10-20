@@ -35,8 +35,8 @@ export const AddTaskForm = ({ opened, setOpened, task }: Props) => {
 	const { data: session } = useSession();
 	const ctx = trpc.useContext();
 	const addTask = trpc.time.upsertTask.useMutation({
-		onSettled: () => {
-			ctx.time.getTasks.invalidate();
+		onSettled: async () => {
+			await ctx.time.getTasks.invalidate();
 		},
 	});
 
@@ -103,7 +103,7 @@ export const AddTaskForm = ({ opened, setOpened, task }: Props) => {
 				</Button>
 				<Button
 					onClick={() => {
-						if (session?.user) {
+						if (session) {
 							addTask.mutate({
 								id: task ? task?.id : '',
 								task: taskName,

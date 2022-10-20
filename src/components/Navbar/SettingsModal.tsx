@@ -21,11 +21,11 @@ export default function SettingsModal({ matches, time }: Props) {
 	const ctx = trpc.useContext();
 	const changeTime = trpc.time.upsertTime.useMutation({
 		onMutate: async (newTime) => {
-			ctx.time.getTime.invalidate();
+			await ctx.time.getTime.invalidate();
 			ctx.time.getTime.setData(newTime);
 		},
-		onSettled: () => {
-			ctx.time.getTime.invalidate();
+		onSettled: async () => {
+			await ctx.time.getTime.invalidate();
 		},
 	});
 
@@ -80,8 +80,6 @@ export default function SettingsModal({ matches, time }: Props) {
 						onClick={() => {
 							if (session) {
 								changeTime.mutate({
-									// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-									userId: session!.user!.id,
 									pomodoro: pomodoroState,
 									short: shortState,
 									long: longState,

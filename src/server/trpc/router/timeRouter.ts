@@ -28,7 +28,6 @@ export const TimeRouter = t.router({
 	upsertTime: t.procedure
 		.input(
 			z.object({
-				userId: z.string(),
 				pomodoro: z.number(),
 				short: z.number(),
 				long: z.number(),
@@ -36,14 +35,15 @@ export const TimeRouter = t.router({
 		)
 		.mutation(async ({ ctx, input }) => {
 			return await ctx.prisma.time.upsert({
-				where: { userId: input.userId },
+				where: { userId: ctx?.session?.user?.id },
 				update: {
 					pomodoro: input.pomodoro,
 					short: input.short,
 					long: input.long,
 				},
 				create: {
-					userId: input.userId,
+					// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+					userId: ctx!.session!.user!.id,
 					pomodoro: input.pomodoro,
 					short: input.short,
 					long: input.short,
