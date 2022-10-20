@@ -14,23 +14,27 @@ import {
 import { useSession } from 'next-auth/react';
 import { trpc } from '../../utils/trpc';
 import { useInputState } from '@mantine/hooks';
+import { Task } from '@prisma/client';
 
 interface Props {
 	opened: boolean;
 	setOpened: React.Dispatch<React.SetStateAction<boolean>>;
+	task?: Task;
 }
 
-export const AddTaskForm = ({ opened, setOpened }: Props) => {
+export const AddTaskForm = ({ opened, setOpened, task }: Props) => {
 	const [open, setOpen] = useState(false);
 
 	const pomodorosRef = useRef<NumberInputHandlers>(null);
-	const [pomodoros, setPomodoros] = useState(1);
-	const [task, setTask] = useInputState('');
-	const [project, setProject] = useInputState('');
+	const [pomodoros, setPomodoros] = useState(task ? task.pomodoros : 1);
+	const [taskName, setTaskName] = useInputState(task ? task.task : '');
+	const [project, setProject] = useInputState(
+		task?.project ? task.project : ''
+	);
 
 	const { data: session } = useSession();
 	const ctx = trpc.useContext();
-	const addTask = trpc.time.addTask.useMutation({
+	const addTask = trpc.time.upsertTask.useMutation({
 		onSuccess: () => ctx.time.getTasks.invalidate(),
 	});
 
@@ -39,8 +43,8 @@ export const AddTaskForm = ({ opened, setOpened }: Props) => {
 			<TextInput
 				my='lg'
 				placeholder='What are you working on?'
-				value={task}
-				onChange={setTask}
+				value={taskName}
+				onChange={setTaskName}
 			/>
 			<Group position='apart' align='center' mb='lg'>
 				<Text weight={900}>Est Pomodoros</Text>
@@ -88,7 +92,7 @@ export const AddTaskForm = ({ opened, setOpened }: Props) => {
 				<Button
 					color='gray'
 					onClick={() => {
-						setTask('');
+						setTaskName('');
 						setPomodoros(1);
 						setProject('');
 						setOpened(!opened);
@@ -99,17 +103,18 @@ export const AddTaskForm = ({ opened, setOpened }: Props) => {
 					onClick={() => {
 						if (session?.user) {
 							addTask.mutate({
-								task: task,
+								id: task ? task?.id : '',
+								task: taskName,
 								pomodoros: pomodoros,
-								userId: session?.user?.id,
+								project: project,
 							});
 						}
-						setTask('');
+						setTaskName('');
 						setPomodoros(1);
 						setProject('');
 						setOpened(!opened);
 					}}>
-					Add
+					{task ? 'Save' : 'Add'}
 				</Button>
 			</Group>
 		</>

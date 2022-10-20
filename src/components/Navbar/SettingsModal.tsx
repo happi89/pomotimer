@@ -1,43 +1,58 @@
 import { Cog6ToothIcon } from '@heroicons/react/24/solid';
 import { Button, Grid, NumberInput, Modal } from '@mantine/core';
-import { useTimerStore } from '../../pages';
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { trpc } from '../../utils/trpc';
+import { Time } from '@prisma/client';
 
-export default function SettingsModal({ matches }: { matches: boolean }) {
+interface Props {
+	matches: boolean;
+	time: Pick<Time, 'pomodoro' | 'short' | 'long'>;
+}
+
+export default function SettingsModal({ matches, time }: Props) {
 	const { data: session } = useSession();
 	const [open, setOpen] = useState(false);
-	const state = useTimerStore();
 
-	const [pomodoroState, setPomodoroState] = useState(state.time.pomodoro);
-	const [shortState, setShortState] = useState(state.time.short);
-	const [longState, setLongState] = useState(state.time.long);
+	const [pomodoroState, setPomodoroState] = useState(time?.pomodoro);
+	const [shortState, setShortState] = useState(time?.short);
+	const [longState, setLongState] = useState(time?.long);
 
+	// const ctx = trpc.useContext();
 	const changeTime = trpc.time.upsertTime.useMutation({
-		onMutate: () => {
-			state.changeTime({
-				pomodoro: pomodoroState,
-				short: shortState,
-				long: longState,
-			});
-		},
+		// // When mutate is called:
+		// onMutate: async (newTodo) => {
+		// 	ctx.time.getTime.invalidate()
+		// 	const previousTime = ctx.time.getTime.getData
+		// 	// ctx.time.getTime.setData((old) => {newTime})
+		// 	// queryClient.setQueryData('todos', (old) => [...old, newTodo]);
+		// 	// Return a context object with the snapshotted value
+		// 	return { previousTime };
+		// },
+		// // If the mutation fails, use the context returned from onMutate to roll back
+		// onError: (err, newTodo, context) => {
+		// 	queryClient.setQueryData('todos', context.previousTodos);
+		// },
+		// // Always refetch after error or success:
+		// onSettled: () => {
+		// 	queryClient.invalidateQueries('todos');
+		// },
 	});
 
 	const inputs = [
 		{
 			label: 'Pomodoro',
-			value: state.time.pomodoro,
+			value: time.pomodoro,
 			onChange: setPomodoroState,
 		},
 		{
 			label: 'Short Break',
-			value: state.time.short,
+			value: time.short,
 			onChange: setShortState,
 		},
 		{
 			label: 'Long Break',
-			value: state.time.long,
+			value: time.long,
 			onChange: setLongState,
 		},
 	];

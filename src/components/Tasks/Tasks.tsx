@@ -1,3 +1,4 @@
+import { Task } from './../Task';
 import { TasksMenu } from './TasksMenu';
 import React, { useState } from 'react';
 import {
@@ -25,7 +26,7 @@ const Tasks = () => {
 			<Divider size='md' mb='sm' />
 
 			{tasks?.map((t, i) => {
-				return <Text key={i}>{t.task}</Text>;
+				return <Task task={t} key={i} tasksLength={tasks.length} />;
 			})}
 
 			<Collapse in={opened} transitionDuration={100}>
