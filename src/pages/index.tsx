@@ -28,9 +28,9 @@ const Home: NextPage = () => {
 	return (
 		<Center>
 			<Container size='xl' px='sm'>
-				<Navbar time={time.data} />
-				<Timer />
-				<Tasks />
+				<Navbar time={time?.data} />
+				<Timer time={time?.data} />
+				<Tasks tasks={tasks?.data} />
 			</Container>
 		</Center>
 	);

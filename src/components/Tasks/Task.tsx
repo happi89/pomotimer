@@ -2,7 +2,7 @@ import { PencilSquareIcon } from '@heroicons/react/24/outline';
 import { UnstyledButton, Divider, Group, Text, Collapse } from '@mantine/core';
 import { Task } from '@prisma/client';
 import { useState } from 'react';
-import { AddTaskForm } from './Tasks/AddTaskForm';
+import { AddTaskForm } from './AddTaskForm';
 
 export function Task({
 	task,

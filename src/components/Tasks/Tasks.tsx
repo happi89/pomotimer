@@ -1,4 +1,3 @@
-import { Task } from './../Task';
 import { TasksMenu } from './TasksMenu';
 import React, { useState } from 'react';
 import {
@@ -12,11 +11,11 @@ import {
 } from '@mantine/core';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import { AddTaskForm } from './AddTaskForm';
-import { useTimerStore } from '../../pages';
+import { Task } from '@prisma/client';
+import { Task as TastItem } from './Task';
 
-const Tasks = () => {
+const Tasks = ({ tasks }: { tasks?: Task[] }) => {
 	const [opened, setOpened] = useState(false);
-	const tasks = useTimerStore((state) => state.tasks);
 	return (
 		<Stack mt='xl'>
 			<Group position='apart' align='center'>
@@ -26,7 +25,7 @@ const Tasks = () => {
 			<Divider size='md' mb='sm' />
 
 			{tasks?.map((t, i) => {
-				return <Task task={t} key={i} tasksLength={tasks.length} />;
+				return <TastItem task={t} key={i} tasksLength={tasks.length} />;
 			})}
 
 			<Collapse in={opened} transitionDuration={100}>

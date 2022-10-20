@@ -18,25 +18,15 @@ export default function SettingsModal({ matches, time }: Props) {
 	const [shortState, setShortState] = useState(time?.short);
 	const [longState, setLongState] = useState(time?.long);
 
-	// const ctx = trpc.useContext();
+	const ctx = trpc.useContext();
 	const changeTime = trpc.time.upsertTime.useMutation({
-		// // When mutate is called:
-		// onMutate: async (newTodo) => {
-		// 	ctx.time.getTime.invalidate()
-		// 	const previousTime = ctx.time.getTime.getData
-		// 	// ctx.time.getTime.setData((old) => {newTime})
-		// 	// queryClient.setQueryData('todos', (old) => [...old, newTodo]);
-		// 	// Return a context object with the snapshotted value
-		// 	return { previousTime };
-		// },
-		// // If the mutation fails, use the context returned from onMutate to roll back
-		// onError: (err, newTodo, context) => {
-		// 	queryClient.setQueryData('todos', context.previousTodos);
-		// },
-		// // Always refetch after error or success:
-		// onSettled: () => {
-		// 	queryClient.invalidateQueries('todos');
-		// },
+		onMutate: async (newTime) => {
+			ctx.time.getTime.invalidate();
+			ctx.time.getTime.setData(newTime);
+		},
+		onSettled: () => {
+			ctx.time.getTime.invalidate();
+		},
 	});
 
 	const inputs = [

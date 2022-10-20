@@ -1,12 +1,16 @@
 import TimerTabs from './TimerTabs';
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Paper, PaperProps, Stack, Tabs, TabsValue, Text } from '@mantine/core';
-import { useTimerStore } from '../../pages';
+import { Paper, Stack, Tabs, TabsValue, Text } from '@mantine/core';
 import React, { useEffect, useRef, useState } from 'react';
 import { useInterval } from '@mantine/hooks';
 import Head from 'next/head';
+import { Time } from '@prisma/client';
 
-export function TimerComponent(props: PaperProps) {
+interface Props {
+	time: Pick<Time, 'pomodoro' | 'short' | 'long'>;
+}
+
+export function TimerComponent({ time }: Props) {
 	const [isPaused, setIsPaused] = useState(true);
 	const [activeTab, setActiveTab] = useState<string | null>('pomodoro');
 	const [secondsLeft, setSecondsLeft] = useState(0);
@@ -14,20 +18,18 @@ export function TimerComponent(props: PaperProps) {
 	const secondsLeftRef = useRef(secondsLeft);
 	const isPausedRef = useRef(isPaused);
 
-	const state = useTimerStore();
-
 	const times = [
 		{
 			label: 'pomodoro',
-			minuteValue: state.time.pomodoro,
+			minuteValue: time?.pomodoro,
 		},
 		{
 			label: 'short',
-			minuteValue: state.time.short,
+			minuteValue: time?.short,
 		},
 		{
 			label: 'long',
-			minuteValue: state.time.long,
+			minuteValue: time?.long,
 		},
 	];
 
@@ -53,7 +55,7 @@ export function TimerComponent(props: PaperProps) {
 		interval.start();
 		return interval.stop;
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [activeTab, state]);
+	}, [activeTab, time]);
 
 	const switchPaused = () => {
 		setIsPaused(!isPaused);
@@ -81,7 +83,7 @@ export function TimerComponent(props: PaperProps) {
 					}`}
 				</title>
 			</Head>
-			<Paper radius='sm' p='xl' shadow='xs' withBorder {...props}>
+			<Paper radius='sm' p='xl' shadow='xs' withBorder>
 				<Stack align='center'>
 					<Tabs
 						keepMounted={false}
