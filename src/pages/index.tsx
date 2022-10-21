@@ -19,9 +19,9 @@ interface Time {
 
 interface TimerState {
 	time: Time;
-	tasks: Omit<Task, 'userId'>[];
+	tasks: Omit<Task, 'userId' | 'createdAt'>[];
 	changeTime: (newValue: Time) => void;
-	addTask: (task: Omit<Task, 'userId'>) => void;
+	addTask: (task: Omit<Task, 'userId' | 'createdAt'>) => void;
 }
 
 export const useTimerStore = create<TimerState>()(
