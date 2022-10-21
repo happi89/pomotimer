@@ -4,13 +4,10 @@ import { Paper, Stack, Tabs, TabsValue, Text } from '@mantine/core';
 import React, { useEffect, useRef, useState } from 'react';
 import { useInterval } from '@mantine/hooks';
 import Head from 'next/head';
-import { Time } from '@prisma/client';
+import { useTimerStore } from '../../pages';
 
-interface Props {
-	time: Pick<Time, 'pomodoro' | 'short' | 'long'>;
-}
-
-export function TimerComponent({ time }: Props) {
+export function TimerComponent() {
+	const time = useTimerStore((state) => state.time);
 	const [isPaused, setIsPaused] = useState(true);
 	const [activeTab, setActiveTab] = useState<string | null>('pomodoro');
 	const [secondsLeft, setSecondsLeft] = useState(0);

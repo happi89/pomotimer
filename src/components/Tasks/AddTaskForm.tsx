@@ -13,8 +13,9 @@ import {
 } from '@mantine/core';
 import { useSession } from 'next-auth/react';
 import { trpc } from '../../utils/trpc';
-import { useInputState } from '@mantine/hooks';
+import { useId, useInputState } from '@mantine/hooks';
 import { Task } from '@prisma/client';
+import { useTimerStore } from '../../pages';
 
 interface Props {
 	opened: boolean;
@@ -23,7 +24,9 @@ interface Props {
 }
 
 export const AddTaskForm = ({ opened, setOpened, task }: Props) => {
+	const setTasks = useTimerStore((state) => state.addTask);
 	const [open, setOpen] = useState(false);
+	const uuid = useId();
 
 	const pomodorosRef = useRef<NumberInputHandlers>(null);
 	const [pomodoros, setPomodoros] = useState(task ? task.pomodoros : 1);
@@ -108,14 +111,20 @@ export const AddTaskForm = ({ opened, setOpened, task }: Props) => {
 				</Button>
 				<Button
 					onClick={() => {
+						const newTask = {
+							id: task ? task?.id : uuid,
+							task: taskName,
+							pomodoros: pomodoros,
+							project: project,
+							done: false,
+						};
+
+						setTasks(newTask);
+
 						if (session) {
-							addTask.mutate({
-								id: task ? task?.id : '',
-								task: taskName,
-								pomodoros: pomodoros,
-								project: project,
-							});
+							addTask.mutate(newTask);
 						}
+
 						setTaskName('');
 						setPomodoros(1);
 						setProject('');

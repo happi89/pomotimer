@@ -15,7 +15,6 @@ import { useSession } from 'next-auth/react';
 import { NextLink } from '@mantine/next';
 import { useMediaQuery } from '@mantine/hooks';
 import React, { useState } from 'react';
-import { Time } from '@prisma/client';
 
 const useStyles = createStyles((theme) => ({
 	header: {
@@ -30,11 +29,7 @@ const useStyles = createStyles((theme) => ({
 	},
 }));
 
-interface Props {
-	time: Pick<Time, 'pomodoro' | 'short' | 'long'>;
-}
-
-export function NavbarComponent({ time }: Props) {
+export function NavbarComponent() {
 	const [open, setOpen] = useState(false);
 	const matches = useMediaQuery('(min-width: 600px)');
 	const { classes } = useStyles();
@@ -56,7 +51,7 @@ export function NavbarComponent({ time }: Props) {
 						{matches ? 'Report' : <ChartPieIcon width={20} />}
 					</Button>
 
-					<SettingsModal matches={matches} time={time} />
+					<SettingsModal matches={matches} />
 
 					<Profile matches={matches} />
 

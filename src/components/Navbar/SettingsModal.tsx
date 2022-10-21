@@ -3,14 +3,14 @@ import { Button, Grid, NumberInput, Modal } from '@mantine/core';
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { trpc } from '../../utils/trpc';
-import { Time } from '@prisma/client';
+import { useTimerStore } from '../../pages';
 
 interface Props {
 	matches: boolean;
-	time: Pick<Time, 'pomodoro' | 'short' | 'long'>;
 }
 
-export default function SettingsModal({ matches, time }: Props) {
+export default function SettingsModal({ matches }: Props) {
+	const time = useTimerStore((state) => state.time);
 	const { data: session } = useSession();
 	const [open, setOpen] = useState(false);
 
@@ -20,10 +20,8 @@ export default function SettingsModal({ matches, time }: Props) {
 
 	const ctx = trpc.useContext();
 	const changeTime = trpc.time.upsertTime.useMutation({
-		onMutate: () => {
-			ctx.time.getTime.cancel();
-			const prevTime = ctx.time.getTime.getData();
-			ctx.time.getTime.setData(prevTime);
+		onMutate: (newTime) => {
+			useTimerStore.setState({ time: newTime });
 		},
 		onSettled: () => {
 			ctx.time.getTime.invalidate();
@@ -33,17 +31,17 @@ export default function SettingsModal({ matches, time }: Props) {
 	const inputs = [
 		{
 			label: 'Pomodoro',
-			value: time.pomodoro,
+			value: time?.pomodoro,
 			onChange: setPomodoroState,
 		},
 		{
 			label: 'Short Break',
-			value: time.short,
+			value: time?.short,
 			onChange: setShortState,
 		},
 		{
 			label: 'Long Break',
-			value: time.long,
+			value: time?.long,
 			onChange: setLongState,
 		},
 	];
@@ -79,12 +77,14 @@ export default function SettingsModal({ matches, time }: Props) {
 						mt='md'
 						mr='xs'
 						onClick={() => {
+							const newTime = {
+								pomodoro: pomodoroState,
+								short: shortState,
+								long: longState,
+							};
+							useTimerStore.setState({ time: newTime });
 							if (session) {
-								changeTime.mutate({
-									pomodoro: pomodoroState,
-									short: shortState,
-									long: longState,
-								});
+								changeTime.mutate(newTime);
 							}
 							setOpen(false);
 						}}>

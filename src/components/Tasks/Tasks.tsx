@@ -11,10 +11,11 @@ import {
 } from '@mantine/core';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import { AddTaskForm } from './AddTaskForm';
-import { Task } from '@prisma/client';
 import { Task as TastItem } from './Task';
+import { useTimerStore } from '../../pages';
 
-const Tasks = ({ tasks }: { tasks?: Task[] }) => {
+const Tasks = () => {
+	const tasks = useTimerStore((state) => state.tasks);
 	const [opened, setOpened] = useState(false);
 	return (
 		<Stack mt='xl'>
