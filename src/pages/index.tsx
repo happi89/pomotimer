@@ -75,12 +75,12 @@ const Home: NextPage = () => {
 
 	useTimerStore.subscribe(
 		(state) => state.time,
-		(time) => setTimerStorage(time),
+		(time) => setTimerStorage(time)
 	);
 
 	useTimerStore.subscribe(
 		(state) => state.tasks,
-		(tasks) => setTasksStorage(tasks),
+		(tasks) => setTasksStorage(tasks)
 	);
 
 	if (time.isLoading || tasks.isLoading)

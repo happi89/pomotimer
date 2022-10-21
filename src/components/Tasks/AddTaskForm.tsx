@@ -13,7 +13,7 @@ import {
 } from '@mantine/core';
 import { useSession } from 'next-auth/react';
 import { trpc } from '../../utils/trpc';
-import { useId, useInputState } from '@mantine/hooks';
+import { useInputState, randomId } from '@mantine/hooks';
 import { Task } from '@prisma/client';
 import { useTimerStore } from '../../pages';
 
@@ -26,7 +26,6 @@ interface Props {
 export const AddTaskForm = ({ opened, setOpened, task }: Props) => {
 	const setTasks = useTimerStore((state) => state.addTask);
 	const [open, setOpen] = useState(false);
-	const uuid = useId();
 
 	const pomodorosRef = useRef<NumberInputHandlers>(null);
 	const [pomodoros, setPomodoros] = useState(task ? task.pomodoros : 1);
@@ -112,7 +111,7 @@ export const AddTaskForm = ({ opened, setOpened, task }: Props) => {
 				<Button
 					onClick={() => {
 						const newTask = {
-							id: task ? task?.id : uuid,
+							id: task ? task?.id : randomId(),
 							task: taskName,
 							pomodoros: pomodoros,
 							project: project,
