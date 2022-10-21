@@ -92,4 +92,21 @@ export const TimeRouter = t.router({
 				},
 			});
 		}),
+	done: t.procedure
+		.input(
+			z.object({
+				taskId: z.string(),
+				done: z.boolean(),
+			})
+		)
+		.mutation(async ({ ctx, input }) => {
+			return await ctx.prisma.task.update({
+				where: {
+					id: input.taskId,
+				},
+				data: {
+					done: input.done,
+				},
+			});
+		}),
 });

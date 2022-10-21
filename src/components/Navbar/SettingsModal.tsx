@@ -20,12 +20,13 @@ export default function SettingsModal({ matches, time }: Props) {
 
 	const ctx = trpc.useContext();
 	const changeTime = trpc.time.upsertTime.useMutation({
-		onMutate: async (newTime) => {
-			await ctx.time.getTime.invalidate();
-			ctx.time.getTime.setData(newTime);
+		onMutate: () => {
+			ctx.time.getTime.cancel();
+			const prevTime = ctx.time.getTime.getData();
+			ctx.time.getTime.setData(prevTime);
 		},
-		onSettled: async () => {
-			await ctx.time.getTime.invalidate();
+		onSettled: () => {
+			ctx.time.getTime.invalidate();
 		},
 	});
 

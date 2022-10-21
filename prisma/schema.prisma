@@ -25,6 +25,7 @@ model Time {
 
 model Task {
     id                String    @id @default(cuid())
+    createdAt         DateTime  @default(now())
     task              String
     userId            String
     user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)

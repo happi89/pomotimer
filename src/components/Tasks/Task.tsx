@@ -10,7 +10,7 @@ import {
 import { Task } from '@prisma/client';
 import { useState } from 'react';
 import { AddTaskForm } from './AddTaskForm';
-import { useInputState } from '@mantine/hooks';
+import { trpc } from '../../utils/trpc';
 
 export function Task({
 	task,
@@ -20,7 +20,19 @@ export function Task({
 	tasksLength: number;
 }) {
 	const [open, setOpen] = useState(false);
-	const [checked, setChecked] = useInputState(false);
+	const [checked, setChecked] = useState(task?.done || false);
+
+	const ctx = trpc.useContext();
+	const done = trpc.time.done.useMutation({
+		onMutate: () => {
+			ctx.time.getTasks.cancel();
+			const prevTask = ctx.time.getTasks.getData();
+			ctx.time.getTasks.setData(prevTask);
+		},
+		onSettled: () => {
+			ctx.time.getTasks.invalidate();
+		},
+	});
 
 	return (
 		<>
@@ -30,7 +42,13 @@ export function Task({
 						size='lg'
 						radius='md'
 						checked={checked}
-						onChange={setChecked}
+						onChange={({ currentTarget }) => {
+							setChecked(currentTarget.checked);
+							done.mutate({
+								taskId: task.id,
+								done: !checked,
+							});
+						}}
 					/>
 					<Text size='lg' weight={700}>
 						{task.task}

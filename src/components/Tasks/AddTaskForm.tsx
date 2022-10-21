@@ -35,8 +35,13 @@ export const AddTaskForm = ({ opened, setOpened, task }: Props) => {
 	const { data: session } = useSession();
 	const ctx = trpc.useContext();
 	const addTask = trpc.time.upsertTask.useMutation({
-		onSettled: async () => {
-			await ctx.time.getTasks.invalidate();
+		onMutate: () => {
+			ctx.time.getTasks.cancel();
+			const optmisticUpdate = ctx.time.getTasks.getData();
+			ctx.time.getTasks.setData(optmisticUpdate);
+		},
+		onSettled: () => {
+			ctx.time.getTasks.invalidate();
 		},
 	});
 
