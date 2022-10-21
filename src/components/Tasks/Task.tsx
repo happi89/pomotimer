@@ -16,7 +16,7 @@ export function Task({
 	task,
 	tasksLength,
 }: {
-	task: Task;
+	task: Omit<Task, 'userId' | 'createdAt'>;
 	tasksLength: number;
 }) {
 	const [open, setOpen] = useState(false);

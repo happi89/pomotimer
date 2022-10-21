@@ -20,7 +20,7 @@ import { useTimerStore } from '../../pages';
 interface Props {
 	opened: boolean;
 	setOpened: React.Dispatch<React.SetStateAction<boolean>>;
-	task?: Task;
+	task?: Omit<Task, 'userId' | 'createdAt'>;
 }
 
 export const AddTaskForm = ({ opened, setOpened, task }: Props) => {
