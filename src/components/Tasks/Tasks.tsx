@@ -25,7 +25,7 @@ const Tasks = ({ tasks }: { tasks?: Task[] }) => {
 			<Divider size='md' mb='sm' />
 
 			{tasks?.map((t, i) => {
-				return <TastItem task={t} key={i} tasksLength={tasks.length} />;
+				return <TastItem task={t} key={i} tasksLength={tasks?.length} />;
 			})}
 
 			<Collapse in={opened} transitionDuration={100}>

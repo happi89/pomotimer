@@ -14,7 +14,7 @@ const Home: NextPage = () => {
 		userId: session?.user?.id || '',
 	});
 
-	if (time.isLoading || tasks.isLoading || !time.data || !tasks.data)
+	if (time.isLoading || tasks.isLoading || !time?.data)
 		return (
 			<Center
 				style={{
