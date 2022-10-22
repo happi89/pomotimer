@@ -20,9 +20,6 @@ export default function SettingsModal({ matches }: Props) {
 
 	const ctx = trpc.useContext();
 	const changeTime = trpc.time.upsertTime.useMutation({
-		onMutate: (newTime) => {
-			useTimerStore.setState({ time: newTime });
-		},
 		onSettled: () => {
 			ctx.time.getTime.invalidate();
 		},

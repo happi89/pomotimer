@@ -23,6 +23,9 @@ export const TimeRouter = t.router({
 				where: {
 					userId: input.userId,
 				},
+				orderBy: {
+					createdAt: 'asc',
+				},
 			});
 		}),
 	upsertTime: t.procedure

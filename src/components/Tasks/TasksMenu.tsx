@@ -24,7 +24,7 @@ export function TasksMenu() {
 					onClick={() => {
 						const tasks = useTimerStore.getState().tasks;
 						useTimerStore.setState({
-							tasks: tasks.filter((t) => (t.done ? t : false)),
+							tasks: tasks.filter((t) => (t.done ? false : t)),
 						});
 						if (session) {
 							delteTasks.mutate({
